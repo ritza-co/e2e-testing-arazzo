@@ -1,0 +1,12 @@
+{
+  "name": "@scope/arazzo-test-gen",
+  "exports": "./mod.ts",
+  "tasks": {
+    "dev": "deno run --watch main.ts",
+    "parser": "deno run --allow-all npm:peggy -o parser.js --format es runtimeExpression.peggy"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "peggy": "npm:peggy@^4.1.1"
+  }
+}

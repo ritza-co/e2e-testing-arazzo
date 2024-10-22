@@ -1,0 +1,20 @@
+expression = ( "$url" / "$method" / "$statusCode" / "$request." source / "$response." source / "$message." source / "$inputs." name / "$outputs." name / "$steps." name / "$workflows." name / "$sourceDescriptions." name / "$components." name / "$components.parameters." parameter-name)
+parameter-name = name ; Reuses 'name' rule for parameter names
+source = ( header-reference / query-reference / path-reference / body-reference )
+header-reference = "header." token
+query-reference = "query." name
+path-reference = "path." name
+body-reference = "body" ["#" json-pointer ]
+json-pointer    = *( "/" reference-token )
+reference-token = *( unescaped / escaped )
+unescaped       = %x00-2E / %x30-7D / %x7F-10FFFF
+    ; %x2F ('/') and %x7E ('~') are excluded from 'unescaped'
+escaped         = "~" ( "0" / "1" )
+  ; representing '~' and '/', respectively
+name = *( CHAR )
+token = 1*tchar
+tchar = "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "." /
+  "^" / "_" / "`" / "|" / "~" / DIGIT / ALPHA
+CHAR           =  %x01-7F
+DIGIT          =  %x30-39
+ALPHA          =  %x41-5A / %x61-7A

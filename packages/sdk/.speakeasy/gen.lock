@@ -1,0 +1,417 @@
+lockVersion: 2.0.0
+id: 8117fc21-d1d2-4458-b065-ec9396a7a49b
+management:
+  docChecksum: ec9d3ab2932978960a7e1f4d181b0f40
+  docVersion: 1.0.0
+  speakeasyVersion: 1.419.0
+  generationVersion: 2.438.3
+  releaseVersion: 0.1.0
+  configChecksum: af2cdb7fb51c70ad47cdb2b9a8607f1b
+features:
+  typescript:
+    additionalDependencies: 0.1.0
+    constsAndDefaults: 0.1.11
+    core: 3.18.2
+    defaultEnabledRetries: 0.1.0
+    devContainers: 2.90.0
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.1.1
+    globalSecurity: 2.82.11
+    globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
+    globalServerURLs: 2.82.4
+    pagination: 2.82.7
+    responseFormat: 0.2.3
+    retries: 2.83.0
+    sdkHooks: 0.1.0
+    tests: 0.7.0
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .eslintrc.cjs
+  - .gitattributes
+  - .npmignore
+  - CONTRIBUTING.md
+  - FUNCTIONS.md
+  - RUNTIMES.md
+  - USAGE.md
+  - docs/lib/utils/retryconfig.md
+  - docs/models/components/addparts.md
+  - docs/models/components/feature.md
+  - docs/models/components/featureinput.md
+  - docs/models/components/features.md
+  - docs/models/components/link.md
+  - docs/models/components/model.md
+  - docs/models/components/newrobot.md
+  - docs/models/components/newrobotmodel.md
+  - docs/models/components/part.md
+  - docs/models/components/partinput.md
+  - docs/models/components/partinputtype.md
+  - docs/models/components/robot.md
+  - docs/models/components/robotactivation.md
+  - docs/models/components/robotactivationstatus.md
+  - docs/models/components/robotfeatures.md
+  - docs/models/components/robotlist.md
+  - docs/models/components/robotparts.md
+  - docs/models/components/security.md
+  - docs/models/components/status.md
+  - docs/models/components/type.md
+  - docs/models/errors/errort.md
+  - docs/models/operations/activaterobotrequest.md
+  - docs/models/operations/addrobotpartsrequest.md
+  - docs/models/operations/assemblerobotrequest.md
+  - docs/models/operations/configurerobotfeaturesrequest.md
+  - docs/models/operations/getrobotfeaturesrequest.md
+  - docs/models/operations/getrobotpartsrequest.md
+  - docs/models/operations/getrobotrequest.md
+  - docs/models/operations/listrobotsrequest.md
+  - docs/models/operations/listrobotsresponse.md
+  - docs/sdks/activation/README.md
+  - docs/sdks/assembly/README.md
+  - docs/sdks/buildabot/README.md
+  - docs/sdks/features/README.md
+  - docs/sdks/parts/README.md
+  - docs/sdks/robots/README.md
+  - jsr.json
+  - package.json
+  - src/__tests__/activation.test.ts
+  - src/__tests__/assembly.test.ts
+  - src/__tests__/features.test.ts
+  - src/__tests__/files.ts
+  - src/__tests__/parts.test.ts
+  - src/__tests__/robots.test.ts
+  - src/core.ts
+  - src/funcs/activationActivateRobot.ts
+  - src/funcs/assemblyAssembleRobot.ts
+  - src/funcs/featuresConfigureRobotFeatures.ts
+  - src/funcs/featuresGetRobotFeatures.ts
+  - src/funcs/partsAddRobotParts.ts
+  - src/funcs/partsGetRobotParts.ts
+  - src/funcs/robotsCreateRobot.ts
+  - src/funcs/robotsGetRobot.ts
+  - src/funcs/robotsListRobots.ts
+  - src/hooks/hooks.ts
+  - src/hooks/index.ts
+  - src/hooks/types.ts
+  - src/index.ts
+  - src/lib/base64.ts
+  - src/lib/config.ts
+  - src/lib/dlv.ts
+  - src/lib/encodings.ts
+  - src/lib/env.ts
+  - src/lib/files.ts
+  - src/lib/http.ts
+  - src/lib/is-plain-object.ts
+  - src/lib/logger.ts
+  - src/lib/matchers.ts
+  - src/lib/primitives.ts
+  - src/lib/retries.ts
+  - src/lib/schemas.ts
+  - src/lib/sdks.ts
+  - src/lib/security.ts
+  - src/lib/url.ts
+  - src/models/components/addparts.ts
+  - src/models/components/feature.ts
+  - src/models/components/featureinput.ts
+  - src/models/components/features.ts
+  - src/models/components/index.ts
+  - src/models/components/link.ts
+  - src/models/components/newrobot.ts
+  - src/models/components/part.ts
+  - src/models/components/partinput.ts
+  - src/models/components/robot.ts
+  - src/models/components/robotactivation.ts
+  - src/models/components/robotfeatures.ts
+  - src/models/components/robotlist.ts
+  - src/models/components/robotparts.ts
+  - src/models/components/security.ts
+  - src/models/errors/error.ts
+  - src/models/errors/httpclienterrors.ts
+  - src/models/errors/index.ts
+  - src/models/errors/sdkerror.ts
+  - src/models/errors/sdkvalidationerror.ts
+  - src/models/operations/activaterobot.ts
+  - src/models/operations/addrobotparts.ts
+  - src/models/operations/assemblerobot.ts
+  - src/models/operations/configurerobotfeatures.ts
+  - src/models/operations/getrobot.ts
+  - src/models/operations/getrobotfeatures.ts
+  - src/models/operations/getrobotparts.ts
+  - src/models/operations/index.ts
+  - src/models/operations/listrobots.ts
+  - src/sdk/activation.ts
+  - src/sdk/assembly.ts
+  - src/sdk/features.ts
+  - src/sdk/index.ts
+  - src/sdk/parts.ts
+  - src/sdk/robots.ts
+  - src/sdk/sdk.ts
+  - src/types/blobs.ts
+  - src/types/constdatetime.ts
+  - src/types/enums.ts
+  - src/types/fp.ts
+  - src/types/index.ts
+  - src/types/operations.ts
+  - src/types/rfcdate.ts
+  - src/types/streams.ts
+  - tsconfig.json
+examples:
+  listRobots:
+    "":
+      parameters:
+        query:
+          page: 1
+          pageSize: 20
+      responses:
+        "200":
+          application/json: {"totalItems": 100, "page": 1, "pageSize": 20, "robots": []}
+        "401":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotListExample:
+      parameters:
+        query:
+          page: 1
+          pageSize: 20
+      responses:
+        "200":
+          application/json: {"totalItems": 2, "page": 1, "pageSize": 20, "robots": [{"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"}]}, {"robotId": "a6b9c9b5-4d7c-4a72-b1cb-4b5e4e5e6e0c", "name": "Mars Rover", "model": "rover", "status": "active", "links": [{"rel": "self", "href": "/v1/robots/a6b9c9b5-4d7c-4a72-b1cb-4b5e4e5e6e0c"}]}]}
+    unauthorizedExample:
+      parameters:
+        query:
+          page: 1
+          pageSize: 20
+      responses:
+        "401":
+          application/json: {"status": 401, "error": "Unauthorized", "message": "API key is missing or invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  createRobot:
+    newRobotExample1:
+      requestBody:
+        application/json: {"name": "T-800", "model": "android"}
+      responses:
+        "201":
+          application/json: {"robotId": "d7e5e6d6-e1d4-417a-9483-1457fbf1493e", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    newRobotExample2:
+      requestBody:
+        application/json: {"name": "Mars Rover", "model": "rover"}
+      responses:
+        "201":
+          application/json: {"robotId": "60a8aa02-87af-49d2-94a8-034d4390368e", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotCreatedExample:
+      requestBody:
+        application/json: {"name": "<value>", "model": "rover"}
+      responses:
+        "201":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"}, {"rel": "parts", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "features", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/features"}]}
+    badRequestExample:
+      requestBody:
+        application/json: {"name": "<value>", "model": "rover"}
+      responses:
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  getRobot:
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "4f3424ca-fffb-4bb3-9b92-9eed7eef46ca", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}]}
+        "401":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"}, {"rel": "parts", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "features", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/features"}]}
+    unauthorizedExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "401":
+          application/json: {"status": 401, "error": "Unauthorized", "message": "API key is missing or invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  getRobotParts:
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "2d1f0530-bdab-4671-9816-bfff3aed07b2", "parts": [{"partId": "fee81f11-9849-4f3e-8dfd-f49cd98d372c", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+        "401":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotPartsExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "parts": [{"partId": "550e8400-e29b-41d4-a716-446655440000", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"partId": "550e8400-e29b-41d4-a716-446655440001", "type": "sensor", "name": "Infrared Sensor", "quantity": 1}]}
+    unauthorizedExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "401":
+          application/json: {"status": 401, "error": "Unauthorized", "message": "API key is missing or invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  addRobotParts:
+    addPartsExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"parts": [{"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "sensor", "name": "Infrared Sensor", "quantity": 1}]}
+      responses:
+        "201":
+          application/json: {"robotId": "8066b4f2-986e-432d-a062-1ab7d80d332f", "parts": [{"partId": "615f2029-ed8d-458d-bb69-6dc405a4b653", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"partId": "e0d39f90-b914-4fbe-8335-3fc3abbbc47c", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"parts": [{"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+      responses:
+        "201":
+          application/json: {"robotId": "ce496808-866d-4be4-a65d-c2df4017bd27", "parts": [{"partId": "a0031590-e410-4de6-a0a8-f57db5394523", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"partId": "d10d5371-aac5-40f5-94c4-cfe9b908559c", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"partId": "3e5e22a6-bf1a-4d24-abc2-01ce981342dc", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    partsAddedExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"parts": [{"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+      responses:
+        "201":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "parts": [{"partId": "550e8400-e29b-41d4-a716-446655440000", "type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"partId": "550e8400-e29b-41d4-a716-446655440001", "type": "sensor", "name": "Infrared Sensor", "quantity": 1}]}
+    badRequestExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"parts": [{"type": "arm", "name": "Hydraulic Arm", "quantity": 2}, {"type": "arm", "name": "Hydraulic Arm", "quantity": 2}]}
+      responses:
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  getRobotFeatures:
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "4d156658-1200-48f6-95d8-3c59f623f879", "features": [{"featureId": "5e76bc01-a481-4384-b8b8-df2023d825f0", "name": "Voice Recognition", "description": "Enables voice command recognition."}, {"featureId": "ab2e6e7a-08ff-4c42-92bd-8f983d93dcde", "name": "Voice Recognition", "description": "Enables voice command recognition."}, {"featureId": "8c2c3028-81d5-4d06-9ce6-c48b665e6a34", "name": "Voice Recognition", "description": "Enables voice command recognition."}]}
+        "401":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotFeaturesExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "features": [{"featureId": "c56a4180-65aa-42ec-a945-5fd21dec0538", "name": "Voice Recognition", "description": "Enables voice command recognition."}, {"featureId": "c56a4180-65aa-42ec-a945-5fd21dec0539", "name": "Obstacle Avoidance", "description": "Navigates around obstacles."}]}
+    unauthorizedExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "401":
+          application/json: {"status": 401, "error": "Unauthorized", "message": "API key is missing or invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  configureRobotFeatures:
+    featuresExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"features": [{"name": "Voice Recognition", "description": "Enables voice command recognition."}, {"name": "Obstacle Avoidance", "description": "Navigates around obstacles."}]}
+      responses:
+        "201":
+          application/json: {"robotId": "83344e46-0b79-4f04-bf7d-60661b333932", "features": [{"featureId": "f94c6b0d-85cb-4f31-9547-acaacc620ce9", "name": "Voice Recognition", "description": "Enables voice command recognition."}, {"featureId": "6e1ea1b7-fa61-470a-b0d8-956bd1a46138", "name": "Voice Recognition", "description": "Enables voice command recognition."}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"features": [{"name": "Voice Recognition", "description": "Enables voice command recognition."}, {"name": "Voice Recognition", "description": "Enables voice command recognition."}, {"name": "Voice Recognition", "description": "Enables voice command recognition."}]}
+      responses:
+        "201":
+          application/json: {"robotId": "4902594d-79fa-44ce-90b7-e721409ae526", "features": [{"featureId": "ec2a58b8-6862-4d12-b023-e33b5bf66ca9", "name": "Voice Recognition", "description": "Enables voice command recognition."}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    featuresConfiguredExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"features": [{"name": "Voice Recognition", "description": "Enables voice command recognition."}, {"name": "Voice Recognition", "description": "Enables voice command recognition."}]}
+      responses:
+        "201":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "features": [{"featureId": "c56a4180-65aa-42ec-a945-5fd21dec0538", "name": "Voice Recognition", "description": "Enables voice command recognition."}, {"featureId": "c56a4180-65aa-42ec-a945-5fd21dec0539", "name": "Obstacle Avoidance", "description": "Navigates around obstacles."}]}
+    badRequestExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      requestBody:
+        application/json: {"features": []}
+      responses:
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  assembleRobot:
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "b32f64ee-7f0c-42d8-891e-c7c0de554bc9", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}]}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotAssembledExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "name": "T-800", "model": "android", "status": "designing", "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"}, {"rel": "parts", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"}, {"rel": "features", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/features"}]}
+    badRequestExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+  activateRobot:
+    "":
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "1ab28d86-b67a-4fac-a4b5-5693e5fe4d4a", "status": "active", "activationTime": "2023-10-15T12:00:00Z", "capabilities": ["Voice Recognition", "Obstacle Avoidance"], "links": []}
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}
+    robotActivatedExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "200":
+          application/json: {"robotId": "f47ac10b-58cc-4372-a567-0e02b2c3d479", "status": "active", "activationTime": "2023-10-15T12:00:00Z", "capabilities": ["Voice Recognition", "Obstacle Avoidance"], "links": [{"rel": "self", "href": "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/activate"}]}
+    badRequestExample:
+      parameters:
+        path:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      responses:
+        "400":
+          application/json: {"status": 400, "error": "Bad Request", "message": "The request payload is invalid.", "details": {"field": "model", "issue": "Must be one of: android, humanoid, rover"}}

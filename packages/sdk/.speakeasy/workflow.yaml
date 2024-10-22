@@ -1,0 +1,12 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+  BuildaBot-OAS:
+    inputs:
+      - location: ../../openapi.yaml
+    registry:
+      location: registry.speakeasyapi.dev/ritza-rzx/ritza/builda-bot-oas
+targets:
+  builda-bot:
+    target: typescript
+    source: BuildaBot-OAS

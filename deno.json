@@ -1,0 +1,18 @@
+{
+  "tasks": {
+    "dev": "deno run --watch=arazzo.yaml --allow-all packages/arazzo-test-gen/mod.ts arazzo.yaml tests/generated-tests.ts",
+    "server": "deno run --watch --allow-all packages/server/server.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "apg-js": "npm:apg-js@^4.4.0"
+  },
+  "workspace": [
+    "packages/sdk",
+    "packages/server",
+    "packages/arazzo-test-gen"
+  ],
+  "unstable": [
+    "sloppy-imports"
+  ]
+}

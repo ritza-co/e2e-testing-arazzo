@@ -1,0 +1,998 @@
+openapi: "3.1.0"
+info:
+  title: Build-a-Bot API
+  version: "1.0.0"
+  description: >
+    The Build-a-Bot API allows users to design and build custom robots by selecting
+    base models, adding parts, configuring features, assembling the robot, and
+    activating it.
+  contact:
+    name: API Support
+    url: https://buildabot.com/support
+    email: support@buildabot.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+tags:
+  - name: Robots
+    description: Operations for creating and managing robots
+  - name: Parts
+    description: Operations for adding parts to robots
+  - name: Features
+    description: Operations for configuring robot features
+  - name: Assembly
+    description: Operations for assembling robots
+  - name: Activation
+    description: Operations for activating robots
+
+x-speakeasy-test: true
+
+x-speakeasy-retries:
+  strategy: backoff
+  backoff:
+    initialInterval: 500 # 500 milliseconds
+    maxInterval: 60000 # 60 seconds
+    maxElapsedTime: 3600000 # 5 minutes
+    exponent: 1.5
+  statusCodes:
+    - 5XX
+  retryConnectionErrors: true
+
+paths:
+  /v1/robots:
+    get:
+      tags:
+        - Robots
+      operationId: listRobots
+      summary: List all robots
+      description: >
+        Retrieves a list of all robots. Supports pagination through query parameters.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number of the results to retrieve.
+          example: 1
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          description: Number of items per page.
+          example: 20
+      responses:
+        "200":
+          description: Successful retrieval of robots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotList"
+              examples:
+                robotListExample:
+                  $ref: "#/components/examples/RobotListExample"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: page
+            in: parameters
+            type: page
+          - name: pageSize
+            in: parameters
+            type: limit
+        outputs:
+          results: $.robots
+    post:
+      tags:
+        - Robots
+      operationId: createRobot
+      summary: Create a new robot design session
+      description: >
+        Initiates a new robot design by selecting a base model.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewRobot"
+            examples:
+              newRobotExample1:
+                $ref: "#/components/examples/NewRobotExample1"
+              newRobotExample2:
+                $ref: "#/components/examples/NewRobotExample2"
+      responses:
+        "201":
+          description: Robot created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+              examples:
+                robotCreatedExample:
+                  $ref: "#/components/examples/RobotExample"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+
+  /v1/robots/{robotId}:
+    get:
+      tags:
+        - Robots
+      operationId: getRobot
+      summary: Get robot details
+      description: >
+        Retrieves detailed information about a specific robot by its unique identifier.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      responses:
+        "200":
+          description: Successful retrieval of robot details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+              examples:
+                robotExample:
+                  $ref: "#/components/examples/RobotExample"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+
+  /v1/robots/{robotId}/parts:
+    get:
+      tags:
+        - Parts
+      operationId: getRobotParts
+      summary: Get robot's parts
+      description: >
+        Retrieves the list of parts associated with the specified robot.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      responses:
+        "200":
+          description: Successful retrieval of robot parts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotParts"
+              examples:
+                robotPartsExample:
+                  $ref: "#/components/examples/RobotPartsExample"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+    post:
+      tags:
+        - Parts
+      operationId: addRobotParts
+      summary: Add parts to the robot
+      description: >
+        Adds parts to the specified robot design. This operation creates new parts or
+        updates existing ones associated with the robot.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddParts"
+            examples:
+              addPartsExample:
+                $ref: "#/components/examples/AddPartsExample"
+      responses:
+        "201":
+          description: Parts added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotParts"
+              examples:
+                partsAddedExample:
+                  $ref: "#/components/examples/RobotPartsExample"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+
+  /v1/robots/{robotId}/features:
+    get:
+      tags:
+        - Features
+      operationId: getRobotFeatures
+      summary: Get robot's features
+      description: >
+        Retrieves the list of features configured for the specified robot.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      responses:
+        "200":
+          description: Successful retrieval of robot features
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotFeatures"
+              examples:
+                robotFeaturesExample:
+                  $ref: "#/components/examples/RobotFeaturesExample"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+    post:
+      tags:
+        - Features
+      operationId: configureRobotFeatures
+      summary: Configure features of the robot
+      description: >
+        Sets up robot functionalities by adding or updating features for the specified
+        robot.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Features"
+            examples:
+              featuresExample:
+                $ref: "#/components/examples/FeaturesExample"
+      responses:
+        "201":
+          description: Features configured successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotFeatures"
+              examples:
+                featuresConfiguredExample:
+                  $ref: "#/components/examples/RobotFeaturesExample"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+
+  /v1/robots/{robotId}/assemble:
+    post:
+      tags:
+        - Assembly
+      operationId: assembleRobot
+      summary: Assemble the robot
+      description: >
+        Validates and assembles the robot. Once assembled, the robot's status changes
+        to "assembled".
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      responses:
+        "200":
+          description: Robot assembled successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+              examples:
+                robotAssembledExample:
+                  $ref: "#/components/examples/RobotExample"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityError"
+
+  /v1/robots/{robotId}/activate:
+    post:
+      tags:
+        - Activation
+      operationId: activateRobot
+      summary: Activate the robot
+      description: >
+        Activates the robot after it has been assembled. Once activated, the robot
+        will begin functioning with all configured features and capabilities. This
+        operation changes the robot's status to "active" and records the activation
+        time.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: "#/components/parameters/robotId"
+      responses:
+        "200":
+          description: Robot activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RobotActivation"
+              examples:
+                robotActivatedExample:
+                  $ref: "#/components/examples/RobotActivationExample"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/RobotNotFoundError"
+        "409":
+          $ref: "#/components/responses/ConflictError"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API key required to authenticate requests. Obtain your API key from your account dashboard.
+        Example: `X-API-Key: your-api-key`
+
+  parameters:
+    robotId:
+      name: robotId
+      in: path
+      required: true
+      description: >
+        Unique identifier of the robot. This ID is generated upon robot creation and
+        is required for subsequent operations on the robot.
+      schema:
+        type: string
+        format: uuid
+      example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+  schemas:
+    Robot:
+      type: object
+      properties:
+        robotId:
+          type: string
+          format: uuid
+          description: Unique identifier of the robot.
+        name:
+          type: string
+          description: The name of the robot.
+          minLength: 3
+          maxLength: 50
+          example: "T-800"
+        model:
+          type: string
+          description: The base model type of the robot.
+          enum:
+            - android
+            - humanoid
+            - rover
+          example: "android"
+        status:
+          type: string
+          description: Current status of the robot.
+          enum:
+            - designing
+            - assembled
+            - active
+          example: "designing"
+        links:
+          type: array
+          description: Hypermedia links to related resources.
+          items:
+            $ref: "#/components/schemas/Link"
+      required:
+        - robotId
+        - name
+        - model
+        - status
+        - links
+      examples:
+        robotExample:
+          $ref: "#/components/examples/RobotExample"
+
+    RobotList:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          description: Total number of robots.
+          example: 100
+        page:
+          type: integer
+          description: Current page number.
+          example: 1
+        pageSize:
+          type: integer
+          description: Number of robots per page.
+          example: 20
+        robots:
+          type: array
+          items:
+            $ref: "#/components/schemas/Robot"
+      required:
+        - totalItems
+        - page
+        - pageSize
+        - robots
+      examples:
+        robotListExample:
+          $ref: "#/components/examples/RobotListExample"
+
+    NewRobot:
+      type: object
+      required:
+        - name
+        - model
+      properties:
+        name:
+          type: string
+          description: The name of the robot.
+          minLength: 3
+          maxLength: 50
+        model:
+          type: string
+          description: The base model type of the robot.
+          enum:
+            - android
+            - humanoid
+            - rover
+      examples:
+        newRobotExample1:
+          $ref: "#/components/examples/NewRobotExample1"
+        newRobotExample2:
+          $ref: "#/components/examples/NewRobotExample2"
+
+    AddParts:
+      type: object
+      required:
+        - parts
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: "#/components/schemas/PartInput"
+      examples:
+        addPartsExample:
+          $ref: "#/components/examples/AddPartsExample"
+
+    PartInput:
+      type: object
+      required:
+        - type
+        - name
+        - quantity
+      properties:
+        type:
+          type: string
+          description: The type of part.
+          enum:
+            - arm
+            - leg
+            - sensor
+            - processor
+            - mobility
+            - power_source
+          example: "arm"
+        name:
+          type: string
+          description: The name of the part.
+          minLength: 2
+          maxLength: 100
+          example: "Hydraulic Arm"
+        quantity:
+          type: integer
+          description: Quantity of the part.
+          minimum: 1
+          example: 2
+      examples:
+        partInputExample1:
+          $ref: "#/components/examples/PartInputExample1"
+        partInputExample2:
+          $ref: "#/components/examples/PartInputExample2"
+
+    RobotParts:
+      type: object
+      properties:
+        robotId:
+          type: string
+          format: uuid
+          description: Unique identifier of the robot.
+        parts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Part"
+      required:
+        - robotId
+        - parts
+      examples:
+        robotPartsExample:
+          $ref: "#/components/examples/RobotPartsExample"
+
+    Part:
+      type: object
+      properties:
+        partId:
+          type: string
+          format: uuid
+          description: Unique identifier of the part.
+        type:
+          type: string
+          enum:
+            - arm
+            - leg
+            - sensor
+            - processor
+            - mobility
+            - power_source
+          description: The type of part.
+          example: "arm"
+        name:
+          type: string
+          description: The name of the part.
+          example: "Hydraulic Arm"
+        quantity:
+          type: integer
+          description: Quantity of the part.
+          example: 2
+      required:
+        - partId
+        - type
+        - name
+        - quantity
+      examples:
+        partExample:
+          $ref: "#/components/examples/PartExample"
+
+    Features:
+      type: object
+      required:
+        - features
+      properties:
+        features:
+          type: array
+          items:
+            $ref: "#/components/schemas/FeatureInput"
+      examples:
+        featuresExample:
+          $ref: "#/components/examples/FeaturesExample"
+
+    FeatureInput:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          description: Name of the feature.
+          minLength: 3
+          maxLength: 100
+          example: "Voice Recognition"
+        description:
+          type: string
+          description: Description of the feature.
+          minLength: 10
+          maxLength: 500
+          example: "Enables voice command recognition."
+      examples:
+        featureInputExample1:
+          $ref: "#/components/examples/FeatureInputExample1"
+        featureInputExample2:
+          $ref: "#/components/examples/FeatureInputExample2"
+
+    RobotFeatures:
+      type: object
+      properties:
+        robotId:
+          type: string
+          format: uuid
+          description: Unique identifier of the robot.
+        features:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+      required:
+        - robotId
+        - features
+      examples:
+        robotFeaturesExample:
+          $ref: "#/components/examples/RobotFeaturesExample"
+
+    Feature:
+      type: object
+      properties:
+        featureId:
+          type: string
+          format: uuid
+          description: Unique identifier of the feature.
+        name:
+          type: string
+          description: Name of the feature.
+          example: "Voice Recognition"
+        description:
+          type: string
+          description: Description of the feature.
+          example: "Enables voice command recognition."
+      required:
+        - featureId
+        - name
+        - description
+      examples:
+        featureExample:
+          $ref: "#/components/examples/FeatureExample"
+
+    RobotActivation:
+      type: object
+      properties:
+        robotId:
+          type: string
+          format: uuid
+          description: Unique identifier of the robot.
+        status:
+          type: string
+          description: Current status of the robot.
+          enum:
+            - active
+          example: "active"
+        activationTime:
+          type: string
+          format: date-time
+          description: The time when the robot was activated.
+          example: "2023-10-15T12:00:00Z"
+        capabilities:
+          type: array
+          items:
+            type: string
+          description: List of robot capabilities.
+          example:
+            - "Voice Recognition"
+            - "Obstacle Avoidance"
+        links:
+          type: array
+          description: Hypermedia links to related resources.
+          items:
+            $ref: "#/components/schemas/Link"
+      required:
+        - robotId
+        - status
+        - activationTime
+        - capabilities
+      examples:
+        robotActivationExample:
+          $ref: "#/components/examples/RobotActivationExample"
+
+    Error:
+      type: object
+      required:
+        - status
+        - error
+        - message
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+          example: 400
+        error:
+          type: string
+          description: Short error message.
+          example: "Bad Request"
+        message:
+          type: string
+          description: Detailed error message.
+          example: "The request payload is invalid."
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error details.
+          example:
+            field: "model"
+            issue: "Must be one of: android, humanoid, rover"
+      examples:
+        badRequestExample:
+          $ref: "#/components/examples/BadRequestErrorExample"
+        unauthorizedExample:
+          $ref: "#/components/examples/UnauthorizedErrorExample"
+        robotNotFoundExample:
+          $ref: "#/components/examples/RobotNotFoundErrorExample"
+        unprocessableEntityExample:
+          $ref: "#/components/examples/UnprocessableEntityErrorExample"
+        conflictErrorExample:
+          $ref: "#/components/examples/ConflictErrorExample"
+
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The relationship of the linked resource.
+          example: "self"
+        href:
+          type: string
+          description: The hyperlink reference.
+          example: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"
+      required:
+        - rel
+        - href
+      examples:
+        linkExample:
+          value:
+            rel: "self"
+            href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            badRequestExample:
+              $ref: "#/components/examples/BadRequestErrorExample"
+
+    UnauthorizedError:
+      description: Unauthorized access
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            unauthorizedExample:
+              $ref: "#/components/examples/UnauthorizedErrorExample"
+
+    RobotNotFoundError:
+      description: Robot not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            robotNotFoundExample:
+              $ref: "#/components/examples/RobotNotFoundErrorExample"
+
+    UnprocessableEntityError:
+      description: Unprocessable entity
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            unprocessableEntityExample:
+              $ref: "#/components/examples/UnprocessableEntityErrorExample"
+
+    ConflictError:
+      description: Conflict error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            conflictErrorExample:
+              $ref: "#/components/examples/ConflictErrorExample"
+
+  examples:
+    NewRobotExample1:
+      summary: Create an android robot
+      value:
+        name: "T-800"
+        model: "android"
+    NewRobotExample2:
+      summary: Create a rover robot
+      value:
+        name: "Mars Rover"
+        model: "rover"
+
+    RobotExample:
+      summary: Example robot object
+      value:
+        robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        name: "T-800"
+        model: "android"
+        status: "designing"
+        links:
+          - rel: "self"
+            href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          - rel: "parts"
+            href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/parts"
+          - rel: "features"
+            href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/features"
+
+    RobotListExample:
+      summary: Example robot list response
+      value:
+        totalItems: 2
+        page: 1
+        pageSize: 20
+        robots:
+          - robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+            name: "T-800"
+            model: "android"
+            status: "designing"
+            links:
+              - rel: "self"
+                href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          - robotId: "a6b9c9b5-4d7c-4a72-b1cb-4b5e4e5e6e0c"
+            name: "Mars Rover"
+            model: "rover"
+            status: "active"
+            links:
+              - rel: "self"
+                href: "/v1/robots/a6b9c9b5-4d7c-4a72-b1cb-4b5e4e5e6e0c"
+
+    PartInputExample1:
+      summary: Example part input for arm
+      value:
+        type: "arm"
+        name: "Hydraulic Arm"
+        quantity: 2
+
+    PartInputExample2:
+      summary: Example part input for sensor
+      value:
+        type: "sensor"
+        name: "Infrared Sensor"
+        quantity: 1
+
+    AddPartsExample:
+      summary: Example request to add parts
+      value:
+        parts:
+          - type: "arm"
+            name: "Hydraulic Arm"
+            quantity: 2
+          - type: "sensor"
+            name: "Infrared Sensor"
+            quantity: 1
+
+    RobotPartsExample:
+      summary: Example robot parts response
+      value:
+        robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        parts:
+          - partId: "550e8400-e29b-41d4-a716-446655440000"
+            type: "arm"
+            name: "Hydraulic Arm"
+            quantity: 2
+          - partId: "550e8400-e29b-41d4-a716-446655440001"
+            type: "sensor"
+            name: "Infrared Sensor"
+            quantity: 1
+
+    PartExample:
+      summary: Example part object
+      value:
+        partId: "550e8400-e29b-41d4-a716-446655440000"
+        type: "arm"
+        name: "Hydraulic Arm"
+        quantity: 2
+
+    FeatureInputExample1:
+      summary: Example feature input for voice recognition
+      value:
+        name: "Voice Recognition"
+        description: "Enables voice command recognition."
+
+    FeatureInputExample2:
+      summary: Example feature input for obstacle avoidance
+      value:
+        name: "Obstacle Avoidance"
+        description: "Navigates around obstacles."
+
+    FeaturesExample:
+      summary: Example request to configure features
+      value:
+        features:
+          - name: "Voice Recognition"
+            description: "Enables voice command recognition."
+          - name: "Obstacle Avoidance"
+            description: "Navigates around obstacles."
+
+    RobotFeaturesExample:
+      summary: Example robot features response
+      value:
+        robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        features:
+          - featureId: "c56a4180-65aa-42ec-a945-5fd21dec0538"
+            name: "Voice Recognition"
+            description: "Enables voice command recognition."
+          - featureId: "c56a4180-65aa-42ec-a945-5fd21dec0539"
+            name: "Obstacle Avoidance"
+            description: "Navigates around obstacles."
+
+    FeatureExample:
+      summary: Example feature object
+      value:
+        featureId: "c56a4180-65aa-42ec-a945-5fd21dec0538"
+        name: "Voice Recognition"
+        description: "Enables voice command recognition."
+
+    RobotActivationExample:
+      summary: Example robot activation response
+      value:
+        robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        status: "active"
+        activationTime: "2023-10-15T12:00:00Z"
+        capabilities:
+          - "Voice Recognition"
+          - "Obstacle Avoidance"
+        links:
+          - rel: "self"
+            href: "/v1/robots/f47ac10b-58cc-4372-a567-0e02b2c3d479/activate"
+
+    BadRequestErrorExample:
+      summary: Bad request error example
+      value:
+        status: 400
+        error: "Bad Request"
+        message: "The request payload is invalid."
+        details:
+          field: "model"
+          issue: "Must be one of: android, humanoid, rover"
+
+    UnauthorizedErrorExample:
+      summary: Unauthorized error example
+      value:
+        status: 401
+        error: "Unauthorized"
+        message: "API key is missing or invalid."
+
+    RobotNotFoundErrorExample:
+      summary: Robot not found error example
+      value:
+        status: 404
+        error: "Not Found"
+        message: "The specified robot does not exist."
+        details:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+    UnprocessableEntityErrorExample:
+      summary: Unprocessable entity error example
+      value:
+        status: 422
+        error: "Unprocessable Entity"
+        message: "Unable to process the contained instructions."
+        details:
+          missingParts:
+            - "power_source"
+            - "processor"
+
+    ConflictErrorExample:
+      summary: Conflict error example
+      value:
+        status: 409
+        error: "Conflict"
+        message: "The robot is already activated."
+        details:
+          robotId: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+security:
+  - ApiKeyAuth: []

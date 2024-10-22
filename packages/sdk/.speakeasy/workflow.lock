@@ -1,0 +1,27 @@
+speakeasyVersion: 1.419.0
+sources:
+    BuildaBot-OAS:
+        sourceNamespace: builda-bot-oas
+        sourceRevisionDigest: sha256:0ace2a9fa269ca220a07d05ecf59b7f959f8ea2e65db87f66193a97a03007c4e
+        sourceBlobDigest: sha256:6573f23177ad79efff6bded12a603bba50b3d88c012b984ceab60ee9b6bf8b0e
+        tags:
+            - latest
+targets:
+    builda-bot:
+        source: BuildaBot-OAS
+        sourceNamespace: builda-bot-oas
+        sourceRevisionDigest: sha256:0ace2a9fa269ca220a07d05ecf59b7f959f8ea2e65db87f66193a97a03007c4e
+        sourceBlobDigest: sha256:6573f23177ad79efff6bded12a603bba50b3d88c012b984ceab60ee9b6bf8b0e
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        BuildaBot-OAS:
+            inputs:
+                - location: ../../openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/ritza-rzx/ritza/builda-bot-oas
+    targets:
+        builda-bot:
+            target: typescript
+            source: BuildaBot-OAS

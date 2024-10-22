@@ -1,0 +1,10 @@
+{
+  "deno.enable": true,
+  "deno.unstable": true,
+  "deno.lint": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "deno.suggest.imports.autoDiscover": true,
+  "deno.suggest.names": true,
+  "deno.suggest.autoImports": true,
+  "deno.suggest.completeFunctionCalls": true
+}
