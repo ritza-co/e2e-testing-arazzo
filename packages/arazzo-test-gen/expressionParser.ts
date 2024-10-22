@@ -1,151 +1,192 @@
-import * as ts from "npm:typescript";
+import { factory } from "npm:typescript";
+import type { Expression } from "npm:typescript";
 import { evaluateRuntimeExpression } from "./utils.ts";
 
-function createAssertExpression(
-  factory: ts.NodeFactory,
-  assertType: string,
-  left: ts.Expression,
-  right: ts.Expression,
-  message: string = "Condition failed"
-): ts.Expression {
+type ComparisonOperator = "==" | "!=" | "<" | "<=" | ">" | ">=";
+
+/**
+ * This module provides functions for parsing and evaluating different types of expressions and conditions
+ * used in Arazzo test generation. It supports regex, JSONPath, and simple comparison conditions.
+ */
+
+/**
+ * Parses a condition string and returns a TypeScript Expression.
+ * This function serves as the main entry point for condition parsing.
+ *
+ * @param condition - The condition string to parse.
+ * @param usedAssertions - A set to track which assertion functions are used.
+ * @param type - The type of condition: "regex", "jsonpath", or "simple".
+ * @param context - The context for evaluating the condition, defaults to "$response.body".
+ * @returns A TypeScript Expression representing the parsed condition.
+ */
+export function parseCondition(
+  condition: string,
+  usedAssertions: Set<string>,
+  type?: "regex" | "jsonpath" | "simple",
+  context: string = "$response.body",
+): Expression {
+  if (type === "regex") {
+    return parseRegexCondition(condition, usedAssertions, context);
+  }
+
+  const { left, operator, right } = parseComparisonCondition(condition);
+
+  const leftExpr = type === "jsonpath"
+    ? parseJsonPathExpression(left, context)
+    : parseSimpleExpression(left);
+
+  const rightExpr = type === "jsonpath"
+    ? parseLiteral(right)
+    : parseSimpleExpression(right);
+
+  const assertFunctionName = getAssertFunctionName(operator);
+  usedAssertions.add(assertFunctionName);
+
   return factory.createCallExpression(
-    factory.createIdentifier(assertType),
+    factory.createIdentifier(assertFunctionName),
     undefined,
-    [left, right, factory.createStringLiteral(message)]
+    [leftExpr, rightExpr, factory.createStringLiteral(condition)],
   );
 }
 
-export function parseSimpleCondition(condition: string): ts.Expression {
-  const factory = ts.factory;
-  const operators: Record<
-    "==" | "!=" | "<" | "<=" | ">" | ">=" | "&&" | "||",
-    | ts.SyntaxKind.EqualsEqualsEqualsToken
-    | ts.SyntaxKind.ExclamationEqualsEqualsToken
-    | ts.SyntaxKind.LessThanToken
-    | ts.SyntaxKind.LessThanEqualsToken
-    | ts.SyntaxKind.GreaterThanToken
-    | ts.SyntaxKind.GreaterThanEqualsToken
-    | ts.SyntaxKind.AmpersandAmpersandToken
-    | ts.SyntaxKind.BarBarToken
-  > = {
-    "==": ts.SyntaxKind.EqualsEqualsEqualsToken,
-    "!=": ts.SyntaxKind.ExclamationEqualsEqualsToken,
-    "<": ts.SyntaxKind.LessThanToken,
-    "<=": ts.SyntaxKind.LessThanEqualsToken,
-    ">": ts.SyntaxKind.GreaterThanToken,
-    ">=": ts.SyntaxKind.GreaterThanEqualsToken,
-    "&&": ts.SyntaxKind.AmpersandAmpersandToken,
-    "||": ts.SyntaxKind.BarBarToken,
+/**
+ * Parses a regex condition and returns a TypeScript Expression.
+ *
+ * @param condition - The regex condition string.
+ * @param usedAssertions - A set to track which assertion functions are used.
+ * @param context - The context for evaluating the condition.
+ * @returns A TypeScript Expression representing the regex condition.
+ */
+function parseRegexCondition(
+  condition: string,
+  usedAssertions: Set<string>,
+  context: string,
+): Expression {
+  usedAssertions.add("assertMatch");
+  return factory.createCallExpression(
+    factory.createIdentifier("assertMatch"),
+    undefined,
+    [
+      evaluateRuntimeExpression(context),
+      factory.createNewExpression(
+        factory.createIdentifier("RegExp"),
+        undefined,
+        [factory.createRegularExpressionLiteral(condition)],
+      ),
+      factory.createStringLiteral(condition),
+    ],
+  );
+}
+
+/**
+ * Parses a comparison condition and returns its parts.
+ *
+ * @param condition - The comparison condition string.
+ * @returns An object containing the left side, operator, and right side of the comparison.
+ * @throws Error if the condition format is invalid.
+ */
+function parseComparisonCondition(condition: string): {
+  left: string;
+  operator: ComparisonOperator;
+  right: string;
+} {
+  const operatorMatch = condition.match(/(.*)(==|!=|<|<=|>|>=)(.*)$/);
+
+  if (!operatorMatch) {
+    throw new Error(`Invalid condition format: ${condition}`);
+  }
+
+  const [, left, operator, right] = operatorMatch;
+  return {
+    left: left.trim(),
+    operator: operator as ComparisonOperator,
+    right: right.trim(),
+  };
+}
+
+/**
+ * Parses a JSONPath expression and returns a TypeScript Expression.
+ *
+ * @param path - The JSONPath expression.
+ * @param context - The context for evaluating the JSONPath.
+ * @returns A TypeScript Expression representing the JSONPath evaluation.
+ */
+function parseJsonPathExpression(path: string, context: string): Expression {
+  return factory.createCallExpression(
+    factory.createIdentifier("JSONPath"),
+    undefined,
+    [
+      factory.createObjectLiteralExpression(
+        [
+          factory.createPropertyAssignment(
+            factory.createIdentifier("wrap"),
+            factory.createFalse(),
+          ),
+          factory.createPropertyAssignment(
+            factory.createIdentifier("path"),
+            factory.createStringLiteral(path),
+          ),
+          factory.createPropertyAssignment(
+            factory.createIdentifier("json"),
+            evaluateRuntimeExpression(context),
+          ),
+        ],
+        true,
+      ),
+    ],
+  );
+}
+
+/**
+ * Parses a simple expression and returns a TypeScript Expression.
+ *
+ * @param expr - The simple expression string.
+ * @returns A TypeScript Expression representing the parsed simple expression.
+ */
+function parseSimpleExpression(expr: string): Expression {
+  return expr.startsWith("$")
+    ? evaluateRuntimeExpression(expr)
+    : parseLiteral(expr);
+}
+
+/**
+ * Parses a literal value and returns a TypeScript Expression.
+ *
+ * @param token - The literal value string.
+ * @returns A TypeScript Expression representing the parsed literal.
+ */
+function parseLiteral(token: string): Expression {
+  if (token === "true") return factory.createTrue();
+  if (token === "false") return factory.createFalse();
+  if (token === "null") return factory.createNull();
+  if (/^\d+$/.test(token)) return factory.createNumericLiteral(token);
+  if (/^'.*'$/.test(token) || /^".*"$/.test(token)) {
+    return factory.createStringLiteral(token.slice(1, -1));
+  }
+  return factory.createStringLiteral(token);
+}
+
+/**
+ * Returns the appropriate assert function name for a given operator.
+ *
+ * @param operator - The comparison operator.
+ * @returns The name of the corresponding assert function.
+ * @throws Error if the operator is unsupported.
+ */
+function getAssertFunctionName(operator: ComparisonOperator): string {
+  const assertFunctions: Record<ComparisonOperator, string> = {
+    "==": "assertEquals",
+    "!=": "assertNotEquals",
+    "<": "assertLess",
+    "<=": "assertLessOrEqual",
+    ">": "assertGreater",
+    ">=": "assertGreaterOrEqual",
   };
 
-  const tokens =
-    condition.match(
-      /(\$\w+(?:\.\w+|#\/\w+)*|\d+|'[^']*'|==|!=|<=|>=|<|>|&&|\|\||\(|\)|\[|\]|\.|!|\w+)/g
-    ) || [];
-
-  function parseLiteral(token: string): ts.Expression {
-    if (token === "true") return factory.createTrue();
-    if (token === "false") return factory.createFalse();
-    if (token === "null") return factory.createNull();
-    if (/^\d+$/.test(token)) return factory.createNumericLiteral(token);
-    if (/^'.*'$/.test(token) || /^".*"$/.test(token)) {
-      return factory.createStringLiteral(token.slice(1, -1));
-    }
-    if (token.startsWith("$")) return evaluateRuntimeExpression(token);
-    return factory.createStringLiteral(token);
+  const assertFunction = assertFunctions[operator];
+  if (!assertFunction) {
+    throw new Error(`Unsupported operator: ${operator}`);
   }
 
-  function parseExpression(tokens: string[], precedence = 0): ts.Expression {
-    let left = parseUnary();
-
-    while (tokens.length > 0) {
-      const op = tokens[0];
-      const newPrecedence = getPrecedence(op);
-      if (newPrecedence <= precedence) break;
-
-      tokens.shift();
-      const right = parseExpression(tokens, newPrecedence);
-
-      // Use assert functions for simple comparisons
-      if (op === "==" || op === "!=") {
-        const assertType = op === "==" ? "assertEquals" : "assertNotEquals";
-        left = createAssertExpression(factory, assertType, left, right, condition);
-      } else if (op === "<" || op === "<=" || op === ">" || op === ">=") {
-        const assertType = {
-          "<": "assertLessThan",
-          "<=": "assertLessThanOrEqual",
-          ">": "assertGreaterThan",
-          ">=": "assertGreaterThanOrEqual",
-        }[op];
-        left = createAssertExpression(factory, assertType, left, right, condition);
-      } else {
-        left = factory.createBinaryExpression(
-          left,
-          factory.createToken(operators[op as keyof typeof operators]),
-          right
-        );
-      }
-    }
-
-    return left;
-  }
-
-  function parseUnary(): ts.Expression {
-    if (tokens[0] === "!") {
-      tokens.shift();
-      return factory.createPrefixUnaryExpression(
-        ts.SyntaxKind.ExclamationToken,
-        parseUnary()
-      );
-    }
-    return parsePrimary();
-  }
-
-  function parsePrimary(): ts.Expression {
-    if (tokens[0] === "(") {
-      tokens.shift();
-      const expr = parseExpression(tokens);
-      if (tokens.shift() !== ")") {
-        throw new Error("Expected closing parenthesis");
-      }
-      return expr;
-    }
-    const token = tokens.shift();
-    if (!token) throw new Error("Unexpected end of input");
-    if (token === "[") {
-      const index = tokens.shift();
-      if (tokens.shift() !== "]") throw new Error("Expected closing bracket");
-      return factory.createElementAccessExpression(
-        parsePrimary(),
-        parseLiteral(index!)
-      );
-    }
-    if (tokens[0] === ".") {
-      tokens.shift();
-      const prop = tokens.shift();
-      return factory.createPropertyAccessExpression(parseLiteral(token), prop!);
-    }
-    return parseLiteral(token);
-  }
-
-  function getPrecedence(op: string): number {
-    switch (op) {
-      case "||":
-        return 1;
-      case "&&":
-        return 2;
-      case "==":
-      case "!=":
-        return 3;
-      case "<":
-      case "<=":
-      case ">":
-      case ">=":
-        return 4;
-      default:
-        return 0;
-    }
-  }
-
-  return parseExpression(tokens);
+  return assertFunction;
 }

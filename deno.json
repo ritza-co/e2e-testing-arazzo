@@ -1,11 +1,13 @@
 {
   "tasks": {
-    "dev": "deno run --watch=arazzo.yaml --allow-all packages/arazzo-test-gen/mod.ts arazzo.yaml tests/generated-tests.ts",
-    "server": "deno run --watch --allow-all packages/server/server.ts"
+    "dev": "deno run --watch=arazzo.yaml --allow-read --allow-write --allow-env packages/arazzo-test-gen/mod.ts arazzo.yaml tests/generated.test.ts",
+    "server": "deno run --watch --allow-read --allow-net --allow-env packages/server/server.ts",
+    "test": "deno test --allow-read --allow-net --allow-env --unstable tests/"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
-    "apg-js": "npm:apg-js@^4.4.0"
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
+    "jsonpath-plus": "npm:jsonpath-plus@^10.1.0"
   },
   "workspace": [
     "packages/sdk",
@@ -14,5 +16,6 @@
   ],
   "unstable": [
     "sloppy-imports"
-  ]
+  ],
+  "nodeModulesDir": "auto"
 }

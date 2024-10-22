@@ -5,8 +5,10 @@
     "jsr:@oak/acorn@*": "1.1.1",
     "jsr:@oak/commons@*": "1.0.0",
     "jsr:@oak/commons@1": "1.0.0",
+    "jsr:@std/assert@*": "1.0.6",
     "jsr:@std/assert@1": "1.0.6",
     "jsr:@std/dotenv@*": "0.225.2",
+    "jsr:@std/dotenv@~0.225.2": "0.225.2",
     "jsr:@std/fmt@^1.0.2": "1.0.2",
     "jsr:@std/fs@*": "1.0.4",
     "jsr:@std/fs@^1.0.4": "1.0.4",
@@ -21,31 +23,36 @@
     "jsr:@std/yaml@*": "1.0.5",
     "jsr:@valibot/valibot@0.42": "0.42.1",
     "npm:@dprint/typescript@*": "0.93.0",
+    "npm:@dprint/typescript@0.93": "0.93.0",
     "npm:@redocly/openapi-core@*": "1.25.7",
+    "npm:@redocly/openapi-core@^1.25.8": "1.25.8",
     "npm:@types/node@*": "22.5.4",
     "npm:@types/node@^18.19.3": "18.19.56",
     "npm:@typescript-eslint/eslint-plugin@^7.7.1": "7.18.0_@typescript-eslint+parser@7.18.0__eslint@8.57.1__typescript@5.6.3_eslint@8.57.1_typescript@5.6.3",
     "npm:@typescript-eslint/parser@^7.7.1": "7.18.0_eslint@8.57.1_typescript@5.6.3",
     "npm:@vitest/ui@^1.5.0": "1.6.0_vitest@1.6.0__@types+node@18.19.56__@vitest+ui@1.6.0_@types+node@18.19.56",
-    "npm:apg-js@^4.4.0": "4.4.0",
+    "npm:abnf@^4.0.1": "4.0.1",
     "npm:buffer@6": "6.0.3",
     "npm:eslint-import-resolver-typescript@^3.6.1": "3.6.3_eslint@8.57.1_eslint-plugin-import@2.31.0__eslint@8.57.1",
     "npm:eslint-plugin-import@^2.29.1": "2.31.0_eslint@8.57.1",
     "npm:eslint@^8.57.0": "8.57.1",
     "npm:hyperid@^3.3.0": "3.3.0",
     "npm:jsonpath-plus@*": "10.1.0_jsep@1.3.9",
-    "npm:jsonpath-plus@10.1.0": "10.1.0_jsep@1.3.9",
     "npm:jsonpath-plus@8.0.0": "8.0.0",
     "npm:jsonpath-plus@9.0.0": "9.0.0_jsep@1.3.9",
+    "npm:jsonpath-plus@^10.1.0": "10.1.0_jsep@1.3.9",
     "npm:openapi-types@*": "12.1.3",
+    "npm:openapi-types@^12.1.3": "12.1.3",
     "npm:path-to-regexp@^8.2.0": "8.2.0",
     "npm:peggy@*": "4.1.1",
     "npm:peggy@4.1.1": "4.1.1",
     "npm:peggy@^4.1.1": "4.1.1",
     "npm:qs@^6.13.0": "6.13.0",
     "npm:string_decoder@^1.3.0": "1.3.0",
+    "npm:to@~0.2.9": "0.2.9",
     "npm:typescript@*": "5.6.3",
     "npm:typescript@^5.4.5": "5.6.3",
+    "npm:typescript@^5.6.3": "5.6.3",
     "npm:undici@^6.18.0": "6.20.1",
     "npm:vitest@^1.5.0": "1.6.0_@types+node@18.19.56_@vitest+ui@1.6.0__vitest@1.6.0__@types+node@18.19.56",
     "npm:zod@^3.23.4": "3.23.8"
@@ -58,7 +65,7 @@
       "integrity": "a6157ef41a7886c14b296bf91b058492b5fd642102666bf8d71c57b92a4e94c0",
       "dependencies": [
         "jsr:@oak/commons@1",
-        "jsr:@std/assert",
+        "jsr:@std/assert@1",
         "jsr:@std/http",
         "jsr:@std/log",
         "jsr:@valibot/valibot",
@@ -73,7 +80,7 @@
     "@oak/commons@1.0.0": {
       "integrity": "49805b55603c3627a9d6235c0655aa2b6222d3036b3a13ff0380c16368f607ac",
       "dependencies": [
-        "jsr:@std/assert",
+        "jsr:@std/assert@1",
         "jsr:@std/http",
         "jsr:@std/media-types"
       ]
@@ -321,6 +328,22 @@
         "yaml-ast-parser"
       ]
     },
+    "@redocly/openapi-core@1.25.8": {
+      "integrity": "sha512-eKKRqo2RYo7UIoDvIgcUB9ynhOjIWJnILXFz+VDevYeOBKd/CxvC0KbNRnuOrFqG3ip6363R/ONal2MyvuVrjg==",
+      "dependencies": [
+        "@redocly/ajv",
+        "@redocly/config",
+        "colorette",
+        "https-proxy-agent",
+        "js-levenshtein",
+        "js-yaml",
+        "lodash.isequal",
+        "minimatch@5.1.6",
+        "node-fetch",
+        "pluralize",
+        "yaml-ast-parser"
+      ]
+    },
     "@rollup/rollup-android-arm-eabi@4.24.0": {
       "integrity": "sha512-Q6HJd7Y6xdB48x8ZNVDOqsbh2uByBhgK8PiQgPhwkIw/HC/YX5Ghq2mQY5sRMZWHb3VsFkWooUVOZHKr7DmDIA=="
     },
@@ -538,6 +561,13 @@
         "pretty-format"
       ]
     },
+    "abnf@4.0.1": {
+      "integrity": "sha512-g7Ru4ZvfpP24OZXegxAhNPU2slM8cgNNVAL7KqAbyCv8gHLHQ9TmcfsMgA0asZ33PeM4yCCKHx50rnHJr7z5Mg==",
+      "dependencies": [
+        "commander",
+        "peggy"
+      ]
+    },
     "acorn-jsx@5.3.2_acorn@8.13.0": {
       "integrity": "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==",
       "dependencies": [
@@ -579,9 +609,6 @@
     },
     "ansi-styles@5.2.0": {
       "integrity": "sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA=="
-    },
-    "apg-js@4.4.0": {
-      "integrity": "sha512-fefmXFknJmtgtNEXfPwZKYkMFX4Fyeyz+fNF6JWp87biGOPslJbCBVU158zvKRZfHBKnJDy8CMM40oLFGkXT8Q=="
     },
     "argparse@2.0.1": {
       "integrity": "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q=="
@@ -1302,6 +1329,9 @@
     "graphemer@1.4.0": {
       "integrity": "sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag=="
     },
+    "handy@0.0.13": {
+      "integrity": "sha512-/zQlqn2DyEjstyfw4lY/JjtPQiKSkZrKn3XsXsEawJwF1CNfbuXzFPGydFAo5Wve+1NHT6lJL7vwhyg5VSgNUw=="
+    },
     "has-bigints@1.0.2": {
       "integrity": "sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ=="
     },
@@ -1331,6 +1361,9 @@
       "dependencies": [
         "function-bind"
       ]
+    },
+    "htmlparser@1.7.7": {
+      "integrity": "sha512-zpK66ifkT0fauyFh2Mulrq4AqGTucxGtOhZ8OjkbSfcCpkqQEI8qRkY0tSQSJNAQ4HUZkgWaU4fK4EH6SVH9PQ=="
     },
     "https-proxy-agent@7.0.5": {
       "integrity": "sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==",
@@ -1531,7 +1564,7 @@
     "json5@1.0.2": {
       "integrity": "sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==",
       "dependencies": [
-        "minimist"
+        "minimist@1.2.8"
       ]
     },
     "jsonpath-plus@10.1.0_jsep@1.3.9": {
@@ -1631,6 +1664,9 @@
         "brace-expansion@2.0.1"
       ]
     },
+    "minimist@0.0.10": {
+      "integrity": "sha512-iotkTvxc+TwOm5Ieim8VnSNvCDjCK9S8G3scJ50ZthspSxa7jx50jkhYduuAtAjvfDUwSgOwf8+If99AlOEhyw=="
+    },
     "minimist@1.2.8": {
       "integrity": "sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA=="
     },
@@ -1721,6 +1757,13 @@
     },
     "openapi-types@12.1.3": {
       "integrity": "sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw=="
+    },
+    "optimist@0.6.1": {
+      "integrity": "sha512-snN4O4TkigujZphWLN0E//nQmm7790RYaE53DdL7ZYwee2D8DDo9/EyYiKUfN3rneWUjhJnueija3G9I2i0h3g==",
+      "dependencies": [
+        "minimist@0.0.10",
+        "wordwrap"
+      ]
     },
     "optionator@0.9.4": {
       "integrity": "sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==",
@@ -2085,6 +2128,16 @@
         "is-number"
       ]
     },
+    "to@0.2.9": {
+      "integrity": "sha512-Xb5kmQVcuba43Ac3fCXVcF8bthDGdg0jeUoyQpyOhVDr3D9sKkLRp7fgkP32eh4lSHY3XzfuhFstU2wLyNGk2g==",
+      "dependencies": [
+        "handy",
+        "htmlparser",
+        "js-yaml",
+        "optimist",
+        "underscore"
+      ]
+    },
     "totalist@3.0.1": {
       "integrity": "sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ=="
     },
@@ -2102,7 +2155,7 @@
       "dependencies": [
         "@types/json5",
         "json5",
-        "minimist",
+        "minimist@1.2.8",
         "strip-bom"
       ]
     },
@@ -2172,6 +2225,9 @@
         "has-symbols",
         "which-boxed-primitive"
       ]
+    },
+    "underscore@1.13.7": {
+      "integrity": "sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g=="
     },
     "undici-types@5.26.5": {
       "integrity": "sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA=="
@@ -2317,6 +2373,9 @@
     "word-wrap@1.2.5": {
       "integrity": "sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA=="
     },
+    "wordwrap@0.0.3": {
+      "integrity": "sha512-1tMA907+V4QmxV7dbRvb4/8MaRALK6q9Abid3ndMYnbyo8piisCmeONVqVSXqQA3KaP4SLt5b7ud6E2sqP8TFw=="
+    },
     "wrappy@1.0.2": {
       "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="
     },
@@ -2441,19 +2500,38 @@
     "https://deno.land/std@0.190.0/yaml/schema/json.ts": "5f41dd7c2f1ad545ef6238633ce9ee3d444dfc5a18101e1768bd5504bf90e5e5",
     "https://deno.land/std@0.190.0/yaml/schema/mod.ts": "4472e827bab5025e92bc2eb2eeefa70ecbefc64b2799b765c69af84822efef32",
     "https://deno.land/std@0.190.0/yaml/stringify.ts": "fffc09c65c68d3d63f8159e8cbaa3f489bc20a8e55b4fbb61a8c2e9f914d1d02",
-    "https://deno.land/std@0.190.0/yaml/type.ts": "1aabb8e0a3f4229ce0a3526256f68826d9bdf65a36c8a3890ead8011fcba7670"
+    "https://deno.land/std@0.190.0/yaml/type.ts": "1aabb8e0a3f4229ce0a3526256f68826d9bdf65a36c8a3890ead8011fcba7670",
+    "https://deno.land/std@0.192.0/fmt/colors.ts": "d67e3cd9f472535241a8e410d33423980bec45047e343577554d3356e1f0ef4e",
+    "https://deno.land/std@0.192.0/testing/_diff.ts": "1a3c044aedf77647d6cac86b798c6417603361b66b54c53331b312caeb447aea",
+    "https://deno.land/std@0.192.0/testing/_format.ts": "a69126e8a469009adf4cf2a50af889aca364c349797e63174884a52ff75cf4c7",
+    "https://deno.land/std@0.192.0/testing/asserts.ts": "e16d98b4d73ffc4ed498d717307a12500ae4f2cbe668f1a215632d19fcffc22f"
   },
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
-      "npm:apg-js@^4.4.0"
+      "jsr:@std/dotenv@~0.225.2",
+      "npm:jsonpath-plus@^10.1.0"
     ],
     "members": {
       "packages/arazzo-test-gen": {
         "dependencies": [
-          "jsr:@std/assert@1",
-          "npm:peggy@^4.1.1"
-        ]
+          "jsr:@dprint/formatter@~0.4.1",
+          "jsr:@std/assert@^1.0.6",
+          "jsr:@std/fs@^1.0.4",
+          "jsr:@std/path@^1.0.6",
+          "jsr:@std/yaml@^1.0.5"
+        ],
+        "packageJson": {
+          "dependencies": [
+            "npm:@dprint/typescript@0.93",
+            "npm:@redocly/openapi-core@^1.25.8",
+            "npm:abnf@^4.0.1",
+            "npm:openapi-types@^12.1.3",
+            "npm:peggy@^4.1.1",
+            "npm:to@~0.2.9",
+            "npm:typescript@^5.6.3"
+          ]
+        }
       },
       "packages/sdk": {
         "packageJson": {
@@ -2473,7 +2551,11 @@
       },
       "packages/server": {
         "dependencies": [
-          "jsr:@std/assert@1"
+          "jsr:@oak/acorn@^1.1.1",
+          "jsr:@oak/commons@1",
+          "jsr:@std/assert@1",
+          "jsr:@std/dotenv@~0.225.2",
+          "jsr:@valibot/valibot@~0.42.1"
         ]
       }
     }

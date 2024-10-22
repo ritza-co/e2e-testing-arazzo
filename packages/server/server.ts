@@ -1,12 +1,14 @@
 import "jsr:@std/dotenv/load";
 import { Status, STATUS_TEXT } from "jsr:@oak/commons/status";
 import { Router, v } from "jsr:@oak/acorn";
-import type { InferIssue, IssuePathItem } from "jsr:@valibot/valibot@0.42";
+import type { InferIssue, IssuePathItem } from "jsr:@valibot/valibot";
 
 const BUILDABOT_API_KEY_AUTH = Deno.env.get("BUILDABOT_API_KEY_AUTH");
 
 if (!BUILDABOT_API_KEY_AUTH) {
-  console.error("BUILDABOT_API_KEY_AUTH is required. Create a .env file with this key.");
+  console.error(
+    "BUILDABOT_API_KEY_AUTH is required. Create a .env file with this key.",
+  );
   Deno.exit(1);
 }
 
@@ -28,9 +30,6 @@ const router = new Router({
     } else if (requestApiKey !== BUILDABOT_API_KEY_AUTH) {
       requestEvent.respond(unauthorizedResponse("Header x-api-key is invalid"));
     }
-  },
-  logger: {
-    console: { level: "DEBUG" },
   },
 });
 
@@ -223,6 +222,74 @@ function invalidHandler(part: string, issues: InferIssue<any>[]): Response {
   });
 }
 
+function saveRobot(robot: Robot) {
+  database.robots.set(robot.robotId, robot);
+}
+
+function getRobot(robotId: string): Robot | undefined {
+  return database.robots.get(robotId);
+}
+
+async function validateRobotId(
+  robotIdRaw: string,
+): Promise<RobotId | undefined> {
+  try {
+    const robotId = await v.parseAsync(RobotIdSchema, robotIdRaw);
+    return robotId;
+  } catch {
+    return undefined;
+  }
+}
+
+function generateErrorResponse(
+  status: Status,
+  message: string,
+  details?: Record<string, unknown>,
+): Response {
+  return Response.json(
+    v.parse(ErrorSchema, {
+      status,
+      error: STATUS_TEXT[status],
+      message,
+      details,
+    }),
+    { status, statusText: STATUS_TEXT[status] },
+  );
+}
+
+function robotIdInvalidResponse(): Response {
+  return generateErrorResponse(
+    Status.BadRequest,
+    "Invalid robotId: must be a valid UUID",
+    {
+      errors: [{ field: "robotId", message: "Invalid UUID" }],
+    },
+  );
+}
+
+function robotNotFoundResponse(robotId: RobotId): Response {
+  return generateErrorResponse(
+    Status.NotFound,
+    `Robot with id ${robotId} not found`,
+  );
+}
+
+function badRequestResponse(
+  message: string,
+  details?: Record<string, unknown>,
+): Response {
+  return generateErrorResponse(Status.BadRequest, message, details);
+}
+
+function unprocessableEntityResponse(message: string): Response {
+  return generateErrorResponse(Status.UnprocessableEntity, message);
+}
+
+function unauthorizedResponse(message: string): Response {
+  return generateErrorResponse(Status.Unauthorized, message);
+}
+
+
 router.post(
   "/v1/robots",
   async (ctx) => {
@@ -275,9 +342,10 @@ router.get("/v1/robots/:robotId", async (ctx) => {
     return robotNotFoundResponse(robotId);
   }
 
-  const capabilities =
-      database.features.get(robotId)?.map((feature) => feature.name) ||
-      [];
+  const capabilities = database.features.get(robotId)?.map((feature) =>
+    feature.name
+  ) ||
+    [];
 
   const links = [
     { rel: "self", href: `/v1/robots/${robot.robotId}` },
@@ -460,7 +528,8 @@ router.post(
 
     const activationTime = new Date().toISOString();
 
-    const capabilities = database.features.get(robotId)?.map((feature) => feature.name) || [];
+    const capabilities =
+      database.features.get(robotId)?.map((feature) => feature.name) || [];
 
     const activatedRobot: Robot = {
       ...robot,
@@ -596,69 +665,4 @@ router.listen({
   hostname: "localhost",
 });
 
-function saveRobot(robot: Robot) {
-  database.robots.set(robot.robotId, robot);
-}
-
-function getRobot(robotId: string): Robot | undefined {
-  return database.robots.get(robotId);
-}
-
-async function validateRobotId(
-  robotIdRaw: string,
-): Promise<RobotId | undefined> {
-  try {
-    const robotId = await v.parseAsync(RobotIdSchema, robotIdRaw);
-    return robotId;
-  } catch {
-    return undefined;
-  }
-}
-
-function generateErrorResponse(
-  status: Status,
-  message: string,
-  details?: Record<string, unknown>,
-): Response {
-  return Response.json(
-    v.parse(ErrorSchema, {
-      status,
-      error: STATUS_TEXT[status],
-      message,
-      details,
-    }),
-    { status, statusText: STATUS_TEXT[status] },
-  );
-}
-
-function robotIdInvalidResponse(): Response {
-  return generateErrorResponse(
-    Status.BadRequest,
-    "Invalid robotId: must be a valid UUID",
-    {
-      errors: [{ field: "robotId", message: "Invalid UUID" }],
-    },
-  );
-}
-
-function robotNotFoundResponse(robotId: RobotId): Response {
-  return generateErrorResponse(
-    Status.NotFound,
-    `Robot with id ${robotId} not found`,
-  );
-}
-
-function badRequestResponse(
-  message: string,
-  details?: Record<string, unknown>,
-): Response {
-  return generateErrorResponse(Status.BadRequest, message, details);
-}
-
-function unprocessableEntityResponse(message: string): Response {
-  return generateErrorResponse(Status.UnprocessableEntity, message);
-}
-
-function unauthorizedResponse(message: string): Response {
-  return generateErrorResponse(Status.Unauthorized, message);
-}
+console.log("Server running on http://localhost:8080");
